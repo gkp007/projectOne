@@ -1,0 +1,10 @@
+export {default as OnboardingSlide} from './OnboardingSlide';
+export {default as NotificationItems} from './NotificationItems';
+export {default as LinkSquare} from './LinkSquare';
+export {default as ScrollBtn} from './ScrollBtn';
+export {default as StarRating} from './StarRating';
+export {default as RecommendedItem} from './RecommendedItem';
+export {default as PopularSearch} from './PopularSearch';
+export {default as AddBtn} from './AddBtn';
+export {default as CouponModal} from './CouponModal';
+export {default as ProductScreen} from './ProductScreen';
