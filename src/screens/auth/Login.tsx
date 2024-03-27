@@ -309,7 +309,8 @@ export default function Login(): JSX.Element {
                   By continuing, you agree to our{' '}
                 </Content>
                 <Pressable _pressed={{ opacity: 0.6 }}
-                  onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/terms-and-conditions')}>
+                // onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/terms-and-conditions')}
+                >
                   <Content fontSize={12} weight="400" color="red.500" underline>
                     Terms and Conditions
                   </Content>
@@ -321,7 +322,7 @@ export default function Login(): JSX.Element {
                 </Content>
                 <Pressable
                   _pressed={{ opacity: 0.6 }}
-                  onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/privacy-policy')}
+                // onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/privacy-policy')}
                 >
                   <Content fontSize={12} weight="400" color="red.500" underline>
                     Privacy Policy

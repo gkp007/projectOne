@@ -1,4 +1,4 @@
-package com.yardhealth;
+package com.feveal;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

@@ -90,7 +90,7 @@ export default function TabLayout() {
 
         <Tab.Screen
           name="Cart"
-          component={Private.Cart}
+          component={Private.AllCategories}
           options={{
             tabBarItemStyle: {
               height: 0,
