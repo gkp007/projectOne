@@ -1,10 +1,11 @@
-import { Box, Center, HStack, Heading, Image, Pressable } from 'native-base';
-import React, { useRef, useState } from 'react';
-import { FlatList, ViewToken, useWindowDimensions } from 'react-native';
-import { ANIMATIONS, IMAGES } from '~/assets';
-import { OnboardingSlide } from '~/components';
-import { Btn } from '~/components/core';
-import { COLORS, WIDTH } from '~/styles';
+import {Box, Center, HStack, Heading, Image, Pressable} from 'native-base';
+import React, {useRef, useState} from 'react';
+import {FlatList, ViewToken, useWindowDimensions} from 'react-native';
+import {ANIMATIONS, IMAGES} from '~/assets';
+import {OnboardingSlide} from '~/components';
+import {Btn} from '~/components/core';
+import {COLORS, WIDTH} from '~/styles';
+import localStorage from '@react-native-async-storage/async-storage';
 
 const OnboardingScreens = [
   {
@@ -30,25 +31,31 @@ const OnboardingScreens = [
   },
 ];
 
-export default function Onboarding({ navigation }: any): JSX.Element {
+export default function Onboarding({navigation}: any): JSX.Element {
   const flatListRef = useRef<FlatList>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const windowDimensions = useWindowDimensions();
 
   const onViewableItemsChanged = useRef<
-    (info: { viewableItems: Array<ViewToken> }) => void
-  >(({ viewableItems }) => {
+    (info: {viewableItems: Array<ViewToken>}) => void
+  >(({viewableItems}) => {
     if (typeof viewableItems?.[0]?.index !== 'number') return;
     setCurrentPage(viewableItems?.[0]?.index);
   });
 
-  return (
-    <Box
-      safeAreaTop
-      h="full"
-    >
+  const viewOnboarding = async () => {
+    try {
+      await localStorage.setItem('viewedOnboarding', 'true');
+      console.log('view onboarding screen');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  viewOnboarding();
 
+  return (
+    <Box safeAreaTop h="full">
       <HStack alignItems={'center'} justifyContent={'flex-end'} m={3} mt={5}>
         <Image
           source={IMAGES.LOGO}
@@ -77,7 +84,6 @@ export default function Onboarding({ navigation }: any): JSX.Element {
             {currentPage == OnboardingScreens.length - 1 ? 'Done' : 'Skip'}
           </Heading>
         </Pressable> */}
-
       </HStack>
 
       <FlatList
@@ -89,15 +95,10 @@ export default function Onboarding({ navigation }: any): JSX.Element {
         initialNumToRender={1}
         extraData={windowDimensions}
         onViewableItemsChanged={onViewableItemsChanged.current}
-        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 100 }}
-        renderItem={({ item }) => (
+        viewabilityConfig={{viewAreaCoveragePercentThreshold: 100}}
+        renderItem={({item}) => (
           <>
-            <OnboardingSlide
-              mt="16"
-              px="4"
-              w={WIDTH}
-              item={item}
-            />
+            <OnboardingSlide mt="16" px="4" w={WIDTH} item={item} />
           </>
         )}
       />
@@ -107,9 +108,9 @@ export default function Onboarding({ navigation }: any): JSX.Element {
           {[...Array(OnboardingScreens.length)].map((_, index) => (
             <Pressable
               onPress={() =>
-                flatListRef.current?.scrollToIndex({ animated: true, index })
+                flatListRef.current?.scrollToIndex({animated: true, index})
               }
-              _pressed={{ bg: 'primary.600' }}
+              _pressed={{bg: 'primary.600'}}
               key={index}
               rounded="sm"
               h="2"
@@ -128,16 +129,14 @@ export default function Onboarding({ navigation }: any): JSX.Element {
             currentPage === OnboardingScreens.length - 1
               ? navigation.replace('Login')
               : flatListRef.current?.scrollToIndex({
-                animated: true,
-                index: OnboardingScreens.length - 1,
-              })
-          }
-        >
+                  animated: true,
+                  index: OnboardingScreens.length - 1,
+                })
+          }>
           <Heading size={'md'} fontSize={18} color={'white'}>
             Get Started
           </Heading>
         </Btn>
-
       </Box>
     </Box>
   );

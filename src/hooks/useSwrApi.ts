@@ -5,7 +5,7 @@ import {BASE_URL} from '../utils';
 const useSwrApi = (url: string | null, options?: SWRConfiguration) => {
   const fetcher = async (url: string) => {
     const accessToken = await AsyncStorage.getItem('accessToken');
-    console.log('hh', accessToken);
+    // console.log('hh', accessToken);
     const headers: {
       Authorization?: string;
       'Content-Type'?: string;
@@ -36,4 +36,3 @@ const useSwrApi = (url: string | null, options?: SWRConfiguration) => {
   };
 };
 export default useSwrApi;
-

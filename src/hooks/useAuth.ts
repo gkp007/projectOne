@@ -34,7 +34,7 @@ const useAuth = create<AuthState>(set => ({
         return;
       }
       console.log('access==>', accessToken);
-      const res = await fetch(`${BASE_URL}/users/current/user`, {
+      const res = await fetch(`${BASE_URL}/users/self`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
