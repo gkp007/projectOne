@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, HStack, Heading, Image, Pressable, Row, ScrollView, StatusBar, Text, VStack } from 'native-base'
+import { Box, Center, HStack, Heading, Image, Pressable, Row, ScrollView, StatusBar, Text, VStack } from 'native-base'
 import { COLORS, HEIGHT, WIDTH } from '~/styles'
 import { PrivateContainer } from '~/components/containers'
 import { BrandsTable, CategoryBox } from '~/components/Home'
@@ -28,6 +28,8 @@ const popularSearchesData = [
     { id: 6, name: 'lens', imageUrl: 'https://yard-ecommerce-web.vercel.app/product/lens_light.jpg', mrp: 345, sellingPrice: 300 },
 ];
 
+
+
 const Home = () => {
 
     const [activeIndex, setActiveIndex] = useState<any>(0);
@@ -37,209 +39,211 @@ const Home = () => {
 
 
     return (
-        <PrivateContainer>
 
-            <Text>Home</Text>
-            {/* <ScrollView>
-                <StatusBar backgroundColor={COLORS.PRIMARY} barStyle="light-content" />
+        <Center mt={80}>Home</Center>
+        // <PrivateContainer>
 
-                <Box
-                    borderBottomLeftRadius={15}
-                    borderBottomRightRadius={15}
-                    bg={COLORS.PRIMARY}
-                >
-                    <Pressable m={2} pb={10} py={3} onPress={() => setVisible(true)} _pressed={{ opacity: 0.5 }}>
-                        <Box
-                            width="100%"
-                            borderRadius="6"
-                            backgroundColor={'white'}
-                            py="1"
-                            px="4"
-                        >
-                            <HStack justifyContent={'space-between'} alignItems={'center'}>
+        //     <Text>Home</Text>
+        //     {/* <ScrollView>
+        //         <StatusBar backgroundColor={COLORS.PRIMARY} barStyle="light-content" />
 
-                                <Content fontSize="13" color={'gray.400'}>Search for health care products</Content>
-                                <HStack space={4} justifyContent={'center'} alignItems={'center'}>
-                                    <Pressable _pressed={{ opacity: 0.9 }} onPress={() => setVisible(true)}>
-                                        <AppIcon IoniconsName='search-outline' size={23} color={COLORS.PRIMARY} />
-                                    </Pressable>
-                                    <Pressable _pressed={{ opacity: 0.5 }} onPress={() => setVisible(true)}>
-                                        <AppIcon EntypoName='mic' size={20} color={COLORS.PRIMARY} />
-                                    </Pressable>
-                                </HStack>
-                            </HStack>
-                        </Box>
+        //         <Box
+        //             borderBottomLeftRadius={15}
+        //             borderBottomRightRadius={15}
+        //             bg={COLORS.PRIMARY}
+        //         >
+        //             <Pressable m={2} pb={10} py={3} onPress={() => setVisible(true)} _pressed={{ opacity: 0.5 }}>
+        //                 <Box
+        //                     width="100%"
+        //                     borderRadius="6"
+        //                     backgroundColor={'white'}
+        //                     py="1"
+        //                     px="4"
+        //                 >
+        //                     <HStack justifyContent={'space-between'} alignItems={'center'}>
 
-                    </Pressable>
-                </Box>
+        //                         <Content fontSize="13" color={'gray.400'}>Search for health care products</Content>
+        //                         <HStack space={4} justifyContent={'center'} alignItems={'center'}>
+        //                             <Pressable _pressed={{ opacity: 0.9 }} onPress={() => setVisible(true)}>
+        //                                 <AppIcon IoniconsName='search-outline' size={23} color={COLORS.PRIMARY} />
+        //                             </Pressable>
+        //                             <Pressable _pressed={{ opacity: 0.5 }} onPress={() => setVisible(true)}>
+        //                                 <AppIcon EntypoName='mic' size={20} color={COLORS.PRIMARY} />
+        //                             </Pressable>
+        //                         </HStack>
+        //                     </HStack>
+        //                 </Box>
 
-                <CategoryBox />
-                <Box>
-                    <Box h={HEIGHT / 4.3} mb={4}>
-                        <Carousel
-                            loop
-                            width={WIDTH}
-                            autoPlay={true}
-                            data={data}
-                            scrollAnimationDuration={1000}
-                            onSnapToItem={(index: number) => setActiveIndex(index)}
-                            renderItem={({ item }) => (
-                                <Pressable
-                                    m={3}
-                                    rounded={'xl'}
-                                    overflow={'hidden'}
-                                    _pressed={{ opacity: '.5' }}
-                                >
-                                    <Image source={{ uri: item.source }} alt="no image" h={HEIGHT / 5} />
+        //             </Pressable>
+        //         </Box>
 
-                                    <Box bg={'#fff'} borderRadius={12} position={'absolute'} p={1} px={2} ml={3} mt={3} >
-                                        <Content color={'black'} weight="400" fontSize={'xs'}>Limited time!</Content>
-                                    </Box>
-                                    <VStack position={'absolute'} bottom={0} p={2} px={4} space={1}>
+        //         <CategoryBox />
+        //         <Box>
+        //             <Box h={HEIGHT / 4.3} mb={4}>
+        //                 <Carousel
+        //                     loop
+        //                     width={WIDTH}
+        //                     autoPlay={true}
+        //                     data={data}
+        //                     scrollAnimationDuration={1000}
+        //                     onSnapToItem={(index: number) => setActiveIndex(index)}
+        //                     renderItem={({ item }) => (
+        //                         <Pressable
+        //                             m={3}
+        //                             rounded={'xl'}
+        //                             overflow={'hidden'}
+        //                             _pressed={{ opacity: '.5' }}
+        //                         >
+        //                             <Image source={{ uri: item.source }} alt="no image" h={HEIGHT / 5} />
 
-                                        <HStack justifyContent={'space-between'}>
-                                            <Content color={'#fff'} weight="300" fontSize={'xs'} w={'100%'}>*Terms and Conditions applied</Content>
-                                        </HStack>
+        //                             <Box bg={'#fff'} borderRadius={12} position={'absolute'} p={1} px={2} ml={3} mt={3} >
+        //                                 <Content color={'black'} weight="400" fontSize={'xs'}>Limited time!</Content>
+        //                             </Box>
+        //                             <VStack position={'absolute'} bottom={0} p={2} px={4} space={1}>
 
-                                    </VStack>
+        //                                 <HStack justifyContent={'space-between'}>
+        //                                     <Content color={'#fff'} weight="300" fontSize={'xs'} w={'100%'}>*Terms and Conditions applied</Content>
+        //                                 </HStack>
 
-                                    <HStack
-                                        right={2}
-                                        top={3}
-                                        position={'absolute'}
-                                        alignSelf={'flex-end'}
-                                        p={2}
-                                        space={3}>
-                                        <AppIcon FeatherName="share-2" size={20} color={'#fff'} />
-                                    </HStack>
-                                    <HStack
-                                        position={'absolute'}
-                                        alignSelf={'flex-end'}
-                                        bottom={0}
-                                        p={2}
-                                        space={3}>
-                                        <Pressable
-                                            bg={COLORS.PRIMARY}
-                                            borderRadius={5}
-                                            _pressed={{ opacity: 0.6 }}
-                                            onPress={() => navigate('AllProducts')}
-                                        >
-                                            <Heading size={'xs'} m={1} color={'white'} p={1}>
-                                                Claim Now
-                                            </Heading>
-                                        </Pressable>
-                                    </HStack>
-                                </Pressable>
-                            )}
-                        />
-                        <Row alignSelf="center" bottom={0} position={'absolute'}>
-                            {data.map((_, index) => (
-                                <Box
-                                    key={index}
-                                    h={2}
-                                    borderRadius={4}
-                                    bg={activeIndex === index ? COLORS.SECONDARY : '#888'}
-                                    w={activeIndex === index ? 4 : 2}
-                                    mr={3}
-                                />
-                            ))}
-                        </Row>
+        //                             </VStack>
 
-                    </Box>
-                </Box>
+        //                             <HStack
+        //                                 right={2}
+        //                                 top={3}
+        //                                 position={'absolute'}
+        //                                 alignSelf={'flex-end'}
+        //                                 p={2}
+        //                                 space={3}>
+        //                                 <AppIcon FeatherName="share-2" size={20} color={'#fff'} />
+        //                             </HStack>
+        //                             <HStack
+        //                                 position={'absolute'}
+        //                                 alignSelf={'flex-end'}
+        //                                 bottom={0}
+        //                                 p={2}
+        //                                 space={3}>
+        //                                 <Pressable
+        //                                     bg={COLORS.PRIMARY}
+        //                                     borderRadius={5}
+        //                                     _pressed={{ opacity: 0.6 }}
+        //                                     onPress={() => navigate('AllProducts')}
+        //                                 >
+        //                                     <Heading size={'xs'} m={1} color={'white'} p={1}>
+        //                                         Claim Now
+        //                                     </Heading>
+        //                                 </Pressable>
+        //                             </HStack>
+        //                         </Pressable>
+        //                     )}
+        //                 />
+        //                 <Row alignSelf="center" bottom={0} position={'absolute'}>
+        //                     {data.map((_, index) => (
+        //                         <Box
+        //                             key={index}
+        //                             h={2}
+        //                             borderRadius={4}
+        //                             bg={activeIndex === index ? COLORS.SECONDARY : '#888'}
+        //                             w={activeIndex === index ? 4 : 2}
+        //                             mr={3}
+        //                         />
+        //                     ))}
+        //                 </Row>
 
-                <Box mx={2}>
-                    <HStack justifyContent={'space-between'} alignItems={'center'} mb={1} >
-                        <Heading color={'black'} size={'md'} >
-                            Top Brands
-                        </Heading>
-                    </HStack>
-                    <BrandsTable />
-                </Box>
+        //             </Box>
+        //         </Box>
 
-                <Box mx={2}>
-                    <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} >
-                        <Heading color={'black'} size={'md'}  >
-                            Best Selling Products
-                        </Heading>
-                        <Pressable onPress={() => navigate('AllProducts')} _pressed={{ opacity: 0.5 }} opacity={0.8} bg={'gray.100'} p={2} borderRadius={6}>
-                            <Content weight='400' fontSize={12} color={'gray.500'} >
-                                See all  〉
-                            </Content>
-                        </Pressable>
-                    </HStack>
-                </Box>
+        //         <Box mx={2}>
+        //             <HStack justifyContent={'space-between'} alignItems={'center'} mb={1} >
+        //                 <Heading color={'black'} size={'md'} >
+        //                     Top Brands
+        //                 </Heading>
+        //             </HStack>
+        //             <BrandsTable />
+        //         </Box>
 
-                <Box mt={4} flexDir="row" w={WIDTH} flexWrap="wrap" alignItems="center" justifyContent="space-evenly">
-                    {ProductData.slice(0, 4).map(item => (
-                        <Box mb={3} key={item.id}>
-                            <LinkSquare
-                                key={item.id}
-                                item={item}
-                                onTap={() => navigate('ProductDetails')}
-                            />
-                        </Box>
-                    ))}
-                </Box>
+        //         <Box mx={2}>
+        //             <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} >
+        //                 <Heading color={'black'} size={'md'}  >
+        //                     Best Selling Products
+        //                 </Heading>
+        //                 <Pressable onPress={() => navigate('AllProducts')} _pressed={{ opacity: 0.5 }} opacity={0.8} bg={'gray.100'} p={2} borderRadius={6}>
+        //                     <Content weight='400' fontSize={12} color={'gray.500'} >
+        //                         See all  〉
+        //                     </Content>
+        //                 </Pressable>
+        //             </HStack>
+        //         </Box>
 
-                <Box mx={2}>
-                    <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} opacity={0.8} >
-                        <Heading color={'black'} size={'md'}  >
-                            New Arrival
-                        </Heading>
-                        <Pressable onPress={() => navigate('NewArrival')} _pressed={{ opacity: 0.5 }} bg={'gray.100'} p={2} borderRadius={6}>
-                            <Content weight='400' fontSize={12} color={'gray.500'}>
-                                See all  〉
-                            </Content>
-                        </Pressable>
-                    </HStack>
-                </Box>
+        //         <Box mt={4} flexDir="row" w={WIDTH} flexWrap="wrap" alignItems="center" justifyContent="space-evenly">
+        //             {ProductData.slice(0, 4).map(item => (
+        //                 <Box mb={3} key={item.id}>
+        //                     <LinkSquare
+        //                         key={item.id}
+        //                         item={item}
+        //                         onTap={() => navigate('ProductDetails')}
+        //                     />
+        //                 </Box>
+        //             ))}
+        //         </Box>
+
+        //         <Box mx={2}>
+        //             <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} opacity={0.8} >
+        //                 <Heading color={'black'} size={'md'}  >
+        //                     New Arrival
+        //                 </Heading>
+        //                 <Pressable onPress={() => navigate('NewArrival')} _pressed={{ opacity: 0.5 }} bg={'gray.100'} p={2} borderRadius={6}>
+        //                     <Content weight='400' fontSize={12} color={'gray.500'}>
+        //                         See all  〉
+        //                     </Content>
+        //                 </Pressable>
+        //             </HStack>
+        //         </Box>
 
 
-                <Box
-                    mt={4}
-                    flexDir="row"
-                    w={WIDTH}
-                    flexWrap="wrap"
-                    alignItems="center"
-                    justifyContent="space-evenly">
-                    {ProductData.slice(0, 4).map(item => (
-                        <Box mb={3} key={item.id}>
-                            <LinkSquare
-                                item={item}
-                                onTap={() => navigate('ProductDetails')}
-                            />
-                        </Box>
-                    ))}
-                </Box>
+        //         <Box
+        //             mt={4}
+        //             flexDir="row"
+        //             w={WIDTH}
+        //             flexWrap="wrap"
+        //             alignItems="center"
+        //             justifyContent="space-evenly">
+        //             {ProductData.slice(0, 4).map(item => (
+        //                 <Box mb={3} key={item.id}>
+        //                     <LinkSquare
+        //                         item={item}
+        //                         onTap={() => navigate('ProductDetails')}
+        //                     />
+        //                 </Box>
+        //             ))}
+        //         </Box>
 
-                <Box mx={2} mb={3}>
-                    <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} opacity={0.8} >
-                        <Heading color={'black'} size={'md'}  >
-                            Popular Searches
-                        </Heading>
-                        <Pressable onPress={() => navigate('PopularSearches')} _pressed={{ opacity: 0.5 }} bg={'gray.100'} p={2} borderRadius={6}>
-                            <Content weight='400' fontSize={12} color={'gray.500'}>
-                                See all  〉
-                            </Content>
-                        </Pressable>
-                    </HStack>
-                </Box>
-                <PopularSearches popularSearchesData={popularSearchesData} />
+        //         <Box mx={2} mb={3}>
+        //             <HStack justifyContent={'space-between'} alignItems={'center'} mt={4} opacity={0.8} >
+        //                 <Heading color={'black'} size={'md'}  >
+        //                     Popular Searches
+        //                 </Heading>
+        //                 <Pressable onPress={() => navigate('PopularSearches')} _pressed={{ opacity: 0.5 }} bg={'gray.100'} p={2} borderRadius={6}>
+        //                     <Content weight='400' fontSize={12} color={'gray.500'}>
+        //                         See all  〉
+        //                     </Content>
+        //                 </Pressable>
+        //             </HStack>
+        //         </Box>
+        //         <PopularSearches popularSearchesData={popularSearchesData} />
 
-            </ScrollView> */}
+        //     </ScrollView> */}
 
-            <GlobalSearch
-                visible={visible}
-                onClose={() => {
-                    setVisible(false);
-                }}
-                onSelect={() => {
-                    setVisible(false);
-                }}
-            />
+        //     <GlobalSearch
+        //         visible={visible}
+        //         onClose={() => {
+        //             setVisible(false);
+        //         }}
+        //         onSelect={() => {
+        //             setVisible(false);
+        //         }}
+        //     />
 
-        </PrivateContainer>
+        // </PrivateContainer>
     )
 }
 

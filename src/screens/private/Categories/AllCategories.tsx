@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, HStack, Heading, Image, Pressable, VStack, ScrollView, SimpleGrid } from 'native-base';
+import { Box, HStack, Heading, Image, Pressable, VStack, ScrollView, SimpleGrid, Center, Text } from 'native-base';
 import { AppIcon, Header } from '~/components/core';
 import { useNavigation } from '@react-navigation/native';
 import { StackAndTabType } from '~/routes/private/types';
@@ -52,8 +52,10 @@ const AllCategories = () => {
     ];
 
     return (
-        <>
-            <Header title="All Categories" />
+        <Center>
+
+            <Text top={80}>Screen</Text>
+            {/* <Header title="All Categories" />
 
             <ScrollView>
                 <SimpleGrid columns={3} mt={5}>
@@ -82,8 +84,8 @@ const AllCategories = () => {
                         </Pressable>
                     ))}
                 </SimpleGrid>
-            </ScrollView>
-        </>
+            </ScrollView> */}
+        </Center>
     );
 };
 

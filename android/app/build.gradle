@@ -79,9 +79,9 @@ android {
    incremental true
    javaMaxHeapSize "4g"
 }
-    namespace "com.yardhealth"
+    namespace "com.feveal"
     defaultConfig {
-        applicationId "com.yardhealth"
+        applicationId "com.feveal"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

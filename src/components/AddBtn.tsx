@@ -28,7 +28,7 @@ export default function AddBtn({ open, toggleOpened }: any): JSX.Element {
       <Box position={'relative'} h={60} w={60} mt={-30}>
         <Pressable
           onPress={() => {
-            navigate('Wallet'), toggleOpened();
+            // navigate('Wallet'), toggleOpened();
           }}
         >
           <Animated.View
@@ -58,7 +58,7 @@ export default function AddBtn({ open, toggleOpened }: any): JSX.Element {
         </Pressable>
         <Pressable
           onPress={() => {
-            navigate('Address'), toggleOpened();
+            // navigate('Address'), toggleOpened();
           }}>
           <Animated.View
             style={[
@@ -81,7 +81,7 @@ export default function AddBtn({ open, toggleOpened }: any): JSX.Element {
         </Pressable>
         <Pressable
           onPress={() => {
-            navigate('AllOrders'), toggleOpened();
+            // navigate('AllOrders'), toggleOpened();
           }}
         >
           <Animated.View

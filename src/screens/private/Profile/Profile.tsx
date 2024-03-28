@@ -32,37 +32,37 @@ export default function Profile() {
         title: 'Profile',
         leftIcon: { FeatherName: 'user', color: COLORS.PRIMARY, size: 18 },
         subtitle: 'Manage Profile',
-        onPress: () => navigate('AllOrders')
+        // onPress: () => navigate('AllOrders')
 
       },
       {
         title: 'Notification',
         leftIcon: { FeatherName: 'bell', color: COLORS.PRIMARY, size: 18 },
         subtitle: 'Manage Notification',
-        onPress: () => navigate('WishList')
+        // onPress: () => navigate('WishList')
       },
       {
         title: 'Messages',
         leftIcon: { FeatherName: 'message-square', color: COLORS.PRIMARY, size: 18 },
 
         subtitle: 'Manage Chats',
-        onPress: () => navigate('MyCoupons')
+        // onPress: () => navigate('MyCoupons')
       },
       {
         title: 'Help & FAQ',
         leftIcon: { EntypoName: 'help', color: COLORS.PRIMARY, size: 18 },
         subtitle: 'Get help',
-        onPress: () => navigate('Address')
+        // onPress: () => navigate('Address')
       },
       {
         title: 'Languages',
         leftIcon: { FontAwesomeName: 'language', color: COLORS.PRIMARY, size: 18 },
         subtitle: 'Manage Language',
-        onPress: () => navigate('Wallet')
+        // onPress: () => navigate('Wallet')
       },
       {
-        title: 'Settings',
-        leftIcon: { IoniconsName: 'settings-outline', color: COLORS.PRIMARY, size: 18 },
+        title: 'Log Out',
+        leftIcon: { FeatherName: 'log-out', color: COLORS.PRIMARY, size: 18 },
 
         subtitle: 'See all settings',
         onPress: () => {
@@ -71,30 +71,30 @@ export default function Profile() {
         }
       },
 
-      {
-        title: 'Privacy Policy',
-        leftIcon: { FeatherName: 'lock', color: COLORS.PRIMARY, size: 18 },
-        onPress: () => Linking.openURL('https://yard-ecommerce-web.vercel.app/privacy-policy')
-      },
-      {
-        title: 'Terms of Service',
-        leftIcon: { FeatherName: 'file-text', color: COLORS.PRIMARY, size: 18 },
-        onPress: () => Linking.openURL('https://yard-ecommerce-web.vercel.app/terms-and-conditions')
+      // {
+      //   title: 'Privacy Policy',
+      //   leftIcon: { FeatherName: 'lock', color: COLORS.PRIMARY, size: 18 },
+      //   onPress: () => Linking.openURL('https://yard-ecommerce-web.vercel.app/privacy-policy')
+      // },
+      // {
+      //   title: 'Terms of Service',
+      //   leftIcon: { FeatherName: 'file-text', color: COLORS.PRIMARY, size: 18 },
+      //   onPress: () => Linking.openURL('https://yard-ecommerce-web.vercel.app/terms-and-conditions')
 
-      },
-      {
-        title: 'About',
-        leftIcon: { FeatherName: 'info', color: COLORS.PRIMARY, size: 18 },
-      },
+      // },
+      // {
+      //   title: 'About',
+      //   leftIcon: { FeatherName: 'info', color: COLORS.PRIMARY, size: 18 },
+      // },
 
-      {
-        title: 'Logout',
-        leftIcon: { FeatherName: 'log-out', color: COLORS.PRIMARY, size: 18 },
-        onPress: () => {
-          logout();
-          navigate('Login');
-        }
-      },
+      // {
+      //   title: 'Logout',
+      //   leftIcon: { FeatherName: 'log-out', color: COLORS.PRIMARY, size: 18 },
+      //   onPress: () => {
+      //     logout();
+      //     navigate('Login');
+      //   }
+      // },
 
     ];
   const userData: {
@@ -130,7 +130,9 @@ export default function Profile() {
             </Pressable>
 
           </HStack>
-          <Pressable _pressed={{ opacity: 0.5 }} onPress={() => navigate('Notifications')}>
+          <Pressable _pressed={{ opacity: 0.5 }}
+          // onPress={() => navigate('Notifications')}
+          >
             <Box p={2} borderRadius={6}>
               <AppIcon FeatherName='bell' color={'white'} size={20} />
             </Box>
@@ -166,9 +168,9 @@ export default function Profile() {
 
 
 
-      <ScrollView _contentContainerStyle={{ minH: 'full' }}>
+      <ScrollView mb={-40} mt={16} _contentContainerStyle={{ minH: 'full' }}>
 
-        <Box zIndex={0} bg={'white'} mt={16} m={4} >
+        <Box zIndex={0} bg={'white'} mx={3} >
           {listData.map((item, index) => (
             <List
               key={index.toString()}

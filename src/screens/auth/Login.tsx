@@ -314,13 +314,9 @@ export default function Login(): JSX.Element {
                 <Content fontSize={11} color="gray.500" weight="400">
                   By continuing, you agree to our{' '}
                 </Content>
-                <Pressable
-                  _pressed={{opacity: 0.6}}
-                  onPress={() =>
-                    Linking.openURL(
-                      'https://yard-ecommerce-web.vercel.app/terms-and-conditions',
-                    )
-                  }>
+                <Pressable _pressed={{ opacity: 0.6 }}
+                // onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/terms-and-conditions')}
+                >
                   <Content fontSize={12} weight="400" color="red.500" underline>
                     Terms and Conditions
                   </Content>
@@ -331,12 +327,9 @@ export default function Login(): JSX.Element {
                   and{' '}
                 </Content>
                 <Pressable
-                  _pressed={{opacity: 0.6}}
-                  onPress={() =>
-                    Linking.openURL(
-                      'https://yard-ecommerce-web.vercel.app/privacy-policy',
-                    )
-                  }>
+                  _pressed={{ opacity: 0.6 }}
+                // onPress={() => Linking.openURL('https://yard-ecommerce-web.vercel.app/privacy-policy')}
+                >
                   <Content fontSize={12} weight="400" color="red.500" underline>
                     Privacy Policy
                   </Content>

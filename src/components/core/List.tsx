@@ -51,7 +51,7 @@ export default function List({
         flexDirection={'row'}
         alignItems="center"
         w="full"
-        py={3}
+        py={2}
         _pressed={{ bg: 'gray.200', opacity: 0.5 }}
         {..._pressableProps}>
         <Center w={avatar || leftIcon ? '1/6' : '0'}>

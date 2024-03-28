@@ -229,7 +229,7 @@ const Seller = () => {
                 <Box mt={4} m={3}>
                     <HStack justifyContent={'space-between'} alignItems={'center'} mb={1} >
                         <Heading color={'gray.600'} size={'md'} >
-                            Why Sell on YardHealth
+                            Why Sell on feveal
                         </Heading>
                     </HStack>
                     <Box w={'100%'}>
