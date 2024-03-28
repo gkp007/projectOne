@@ -11,9 +11,10 @@ import {
   VStack,
   useToast,
   Pressable,
-  Heading,
   Text,
   Alert,
+  Heading,
+  Spinner,
 } from 'native-base';
 import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -270,9 +271,13 @@ export default function Login(): JSX.Element {
                   _text={{ color: 'white', fontSize: 'sm' }}
                   onPress={handleSubmit(handleLogin)}
                   shadow={0.8}>
-                  <Heading fontSize={15} py={1} color={'white'}>
-                    Sign In
-                  </Heading>
+                  {isLoading ? (
+                    <Spinner size={'sm'} color={'white'} />
+                  ) : (
+                    <Heading fontSize={15} py={1} color={'white'}>
+                      Sign In
+                    </Heading>
+                  )}
 
                   <AppIcon FeatherName="log-in" color={'white'} size={20} />
                 </Btn>

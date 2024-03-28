@@ -192,9 +192,14 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
                     }}>
                     <HStack space={4} alignItems={'center'}>
                       {/* <Spinner alignSelf={'center'} size={13} color={'white'} /> */}
-                      <Heading py={1} fontSize={15} color={'white'}>
-                        Submit
-                      </Heading>
+
+                      {isLoading ? (
+                        <Spinner size={'sm'} color={'white'} />
+                      ) : (
+                        <Heading py={1} fontSize={15} color={'white'}>
+                          Submit
+                        </Heading>
+                      )}
                     </HStack>
                   </Btn>
                 </Box>

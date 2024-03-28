@@ -14,6 +14,7 @@ import {
   Heading,
   Text,
   Alert,
+  Spinner,
 } from 'native-base';
 import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -99,7 +100,7 @@ export default function Register(): JSX.Element {
       console.log('615216');
       if (res?.results?.success && res?.results?.data?.token) {
         setToken(res?.results?.data?.token);
-        getUser();
+
         navigate('OTPScreen', {
           token: res?.results?.data?.token,
           objData,
@@ -430,7 +431,11 @@ export default function Register(): JSX.Element {
                     onPress={handleSubmit(handleLogin)}
                     shadow={0.8}>
                     <Heading fontSize={15} py={1} color={'white'}>
-                      Get verification code
+                      {isLoading ? (
+                        <Spinner size={'sm'} color={'white'} />
+                      ) : (
+                        <Text> Get verification code</Text>
+                      )}
                     </Heading>
 
                     <AppIcon FeatherName="log-in" color={'white'} size={20} />
