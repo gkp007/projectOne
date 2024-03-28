@@ -11,17 +11,17 @@ import {
   Spinner,
   Image,
 } from 'native-base';
-import {Content, OTPInput} from '~/components/core';
-import {Btn} from '~/components/core';
-import {COLORS} from '~/styles';
-import {useNavigation} from '@react-navigation/native';
-import {StackAndTabType} from '~/routes/private/types';
-import {useAuth, useMutation} from '~/hooks';
-import {IMAGES} from '~/assets';
-import {ImageBackground} from 'react-native';
-import {PublicRoutesTypes} from '~/routes/public/types';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useFocusEffect} from '@react-navigation/native';
+import { Content, OTPInput } from '~/components/core';
+import { Btn } from '~/components/core';
+import { COLORS } from '~/styles';
+import { useNavigation } from '@react-navigation/native';
+import { StackAndTabType } from '~/routes/private/types';
+import { useAuth, useMutation } from '~/hooks';
+import { IMAGES } from '~/assets';
+import { ImageBackground } from 'react-native';
+import { PublicRoutesTypes } from '~/routes/public/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
 import localStorage from '@react-native-async-storage/async-storage';
 
 type otp = {
@@ -29,14 +29,14 @@ type otp = {
 };
 
 type Props = NativeStackScreenProps<PublicRoutesTypes, 'OTPScreen'>;
-export default function OTPVerification({route: {params}}: Props): JSX.Element {
+export default function OTPVerification({ route: { params } }: Props): JSX.Element {
   const [otpValue, setOtpValue] = React.useState<string[]>([]);
   const bg4 = useColorModeValue('white', 'black');
-  const {navigate, goBack} = useNavigation<StackAndTabType>();
-  const {token, objData} = params; // Accessing route params?
+  const { navigate, goBack } = useNavigation<StackAndTabType>();
+  const { token, objData } = params; // Accessing route params?
   const [asyncToken, setSyncToken] = React.useState<any>();
-  const {mutation: login, isLoading} = useMutation();
-  const {mutation: otp, isLoading: isOtpLoading} = useMutation();
+  const { mutation: login, isLoading } = useMutation();
+  const { mutation: otp, isLoading: isOtpLoading } = useMutation();
   React.useEffect(() => {
     const fetchData = async () => {
       const accessToken = await localStorage.getItem('accessToken');
@@ -49,7 +49,7 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
   const handleOtpChange = (newValue: string[]) => {
     setOtpValue(newValue);
   };
-  console.log({objData});
+  console.log({ objData });
 
   const handleResend = async () => {
     try {
@@ -67,7 +67,7 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
     }
   };
 
-  const {setUser, getUser, setToken} = useAuth();
+  const { setUser, getUser, setToken } = useAuth();
 
   const toast = useToast();
 
@@ -86,6 +86,7 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
       // });726866
 
       if (res?.results?.success) {
+
         setToken(res?.results?.data?.token);
         setUser(res?.results?.data);
         toast.show({
@@ -110,12 +111,12 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
         },
       }}>
       <ImageBackground
-        style={{flex: 1, height: 450}}
+        style={{ flex: 1, height: 450 }}
         borderRadius={5}
         resizeMode="cover"
         source={IMAGES.FIRST}
         alt="Logo"
-        imageStyle={{opacity: 0.2, backgroundColor: 'blue'}}>
+        imageStyle={{ opacity: 0.2, backgroundColor: 'blue' }}>
         <Image
           source={IMAGES.SECOND}
           resizeMode={'contain'}
@@ -166,7 +167,7 @@ export default function OTPVerification({route: {params}}: Props): JSX.Element {
                   <Content fontSize={11} weight="400" color={'gray'}>
                     Didn't received the OTP?
                   </Content>
-                  <Pressable _pressed={{opacity: 0.5}} onPress={handleResend}>
+                  <Pressable _pressed={{ opacity: 0.5 }} onPress={handleResend}>
                     <Content
                       underline
                       fontSize={12}

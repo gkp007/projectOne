@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AnimatedLottieView from 'lottie-react-native';
 import {
   Box,
@@ -16,16 +16,16 @@ import {
   Heading,
   Spinner,
 } from 'native-base';
-import React, {useMemo, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {ImageBackground, Linking, useWindowDimensions} from 'react-native';
-import {IMAGES} from '~/assets';
-import {LOTTI} from '~/assets/animations';
-import {AppInput, Btn, Content, CountryPicker} from '~/components/core';
-import AppIcon, {IconProps} from '~/components/core/AppIcon';
-import {useAuth, useMutation, useSwrApi} from '~/hooks';
-import {PublicRoutesTypes} from '~/routes';
-import {COLORS, HEIGHT} from '~/styles';
+import React, { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ImageBackground, Linking, useWindowDimensions } from 'react-native';
+import { IMAGES } from '~/assets';
+import { LOTTI } from '~/assets/animations';
+import { AppInput, Btn, Content, CountryPicker } from '~/components/core';
+import AppIcon, { IconProps } from '~/components/core/AppIcon';
+import { useAuth, useMutation, useSwrApi } from '~/hooks';
+import { PublicRoutesTypes } from '~/routes';
+import { COLORS, HEIGHT } from '~/styles';
 import {
   GoogleSignin,
   statusCodes,
@@ -49,28 +49,28 @@ export default function Login(): JSX.Element {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
-  const {mutation: gmail, isLoading: isGmailValidating} = useMutation();
+  const { mutation: gmail, isLoading: isGmailValidating } = useMutation();
   let objData: any = {};
-  const {navigate} =
+  const { navigate } =
     useNavigation<NativeStackNavigationProp<PublicRoutesTypes>>();
-  const {height} = useWindowDimensions();
+  const { height } = useWindowDimensions();
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<FormData>();
 
-  const {setUser, getUser, setToken} = useAuth();
-  const {mutation: login, isLoading} = useMutation();
-  const {mutation: gLogin} = useMutation();
+  const { setUser, getUser, setToken } = useAuth();
+  const { mutation: login, isLoading } = useMutation();
+  const { mutation: gLogin } = useMutation();
 
-  const {data, error, isValidating} = useSwrApi(`auth/google/select-profile`);
+  const { data, error, isValidating } = useSwrApi(`auth/google/select-profile`);
 
-  console.log(data, 'data');
+  // console.log(data, 'data');
 
   const handleLogin = async (formData: FormData) => {
     try {
-      const {mobile} = formData;
+      const { mobile } = formData;
       // console.log('Mobile Number:', mobile);
       // console.log('Mobile Number:', selectedCountry.name);
       // console.log('Mobile Number:', selectedCountry.phone);
@@ -82,8 +82,6 @@ export default function Login(): JSX.Element {
         },
       };
 
-      324969;
-      389516;
       const res = await login(`auth/generate-otp`, {
         isAlert: true,
         body: objData,
@@ -135,7 +133,7 @@ export default function Login(): JSX.Element {
   // };
 
   const handleLoginWithGmail = async (data: FormData) => {
-    const {username, password} = data;
+    const { username, password } = data;
     try {
       const res = await gmail(`auth/login-with-email-and-password`, {
         body: {
@@ -143,6 +141,7 @@ export default function Login(): JSX.Element {
           password,
         },
       });
+      console.log(res, 'res gmail')
       if (res?.results?.success) {
         setToken(res?.results?.data?.token);
         setUser(res?.results?.data);
@@ -168,7 +167,7 @@ export default function Login(): JSX.Element {
         key: 'mobile',
         label: undefined,
         placeholder: 'Enter your mobile number',
-        icon: {IoniconsName: 'call', color: 'gray'},
+        icon: { IoniconsName: 'call', color: 'gray' },
         rules: {
           required: 'Mobile number is required',
           pattern: {
@@ -192,7 +191,7 @@ export default function Login(): JSX.Element {
         key: 'username',
         label: 'Email',
         placeholder: 'Username',
-        icon: {FeatherName: 'mail'},
+        icon: { FeatherName: 'mail' },
         rules: {
           required: 'Username is required',
           pattern: {
@@ -210,7 +209,7 @@ export default function Login(): JSX.Element {
         key: 'password',
         label: 'Password',
         placeholder: 'Password',
-        icon: {FeatherName: 'lock'},
+        icon: { FeatherName: 'lock' },
         rules: {
           required: 'Password is required',
           minLength: {
@@ -223,7 +222,7 @@ export default function Login(): JSX.Element {
           rightElement: (
             <Btn
               colors={['#fff', '#fff']}
-              _text={{color: 'black', fontSize: 'xs'}}
+              _text={{ color: 'black', fontSize: 'xs' }}
               onPress={() => setSecureTextEntry(!secureTextEntry)}>
               {secureTextEntry ? 'Show' : 'Hide'}
             </Btn>
@@ -235,7 +234,7 @@ export default function Login(): JSX.Element {
   );
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box
         zIndex={1}
         bg={{
@@ -248,12 +247,12 @@ export default function Login(): JSX.Element {
         flex={1}
         position="relative">
         <ImageBackground
-          style={{flex: 1, height: 450}}
+          style={{ flex: 1, height: 450 }}
           borderRadius={5}
           resizeMode="cover"
           source={IMAGES.FIRST}
           alt="Logo"
-          imageStyle={{opacity: 0.2, backgroundColor: 'blue'}}>
+          imageStyle={{ opacity: 0.2, backgroundColor: 'blue' }}>
           <Image
             source={IMAGES.SECOND}
             resizeMode={'contain'}
@@ -315,7 +314,7 @@ export default function Login(): JSX.Element {
                 <Box m={2}>
                   <Btn
                     bg={COLORS.PRIMARY}
-                    _text={{color: 'white', fontSize: 'sm'}}
+                    _text={{ color: 'white', fontSize: 'sm' }}
                     onPress={handleSubmit(handleLoginWithGmail)}
                     shadow={0.8}>
                     <Heading fontSize={15} py={1} color={'white'}>
@@ -376,7 +375,7 @@ export default function Login(): JSX.Element {
                 <Box m={4}>
                   <Btn
                     bg={COLORS.PRIMARY}
-                    _text={{color: 'white', fontSize: 'sm'}}
+                    _text={{ color: 'white', fontSize: 'sm' }}
                     onPress={handleSubmit(handleLogin)}
                     shadow={0.8}>
                     {isLoading ? (
@@ -396,7 +395,7 @@ export default function Login(): JSX.Element {
                 </Text>
 
                 <Pressable
-                  _pressed={{opacity: 0.8}}
+                  _pressed={{ opacity: 0.8 }}
                   w={'92%'}
                   py={1.5}
                   borderColor={'blue.800'}
@@ -426,7 +425,7 @@ export default function Login(): JSX.Element {
               </VStack>
             )}
             <Pressable
-              _pressed={{opacity: 0.8}}
+              _pressed={{ opacity: 0.8 }}
               w={'92%'}
               py={1.5}
               onPress={() => {

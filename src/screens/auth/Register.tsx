@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AnimatedLottieView from 'lottie-react-native';
 import {
   Box,
@@ -16,21 +16,21 @@ import {
   Alert,
   Spinner,
 } from 'native-base';
-import React, {useMemo, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {ImageBackground, Linking, useWindowDimensions} from 'react-native';
-import {IMAGES} from '~/assets';
-import {LOTTI} from '~/assets/animations';
-import {AppInput, Btn, Content, CountryPicker} from '~/components/core';
-import AppIcon, {IconProps} from '~/components/core/AppIcon';
-import {useAuth, useMutation, useSwrApi} from '~/hooks';
-import {PublicRoutesTypes} from '~/routes';
-import {COLORS, HEIGHT} from '~/styles';
+import React, { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ImageBackground, Linking, useWindowDimensions } from 'react-native';
+import { IMAGES } from '~/assets';
+import { LOTTI } from '~/assets/animations';
+import { AppInput, Btn, Content, CountryPicker } from '~/components/core';
+import AppIcon, { IconProps } from '~/components/core/AppIcon';
+import { useAuth, useMutation, useSwrApi } from '~/hooks';
+import { PublicRoutesTypes } from '~/routes';
+import { COLORS, HEIGHT } from '~/styles';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {PublicRouteProps} from '~/routes/public/types';
+import { PublicRouteProps } from '~/routes/public/types';
 
 type FormInput = {
   key: string;
@@ -61,26 +61,26 @@ export default function Register(): JSX.Element {
   const [isPhone, setIsPhone] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [visible, setVisible] = useState(false);
-  const {navigate} = useNavigation<PublicRouteProps>();
-  const {height} = useWindowDimensions();
+  const { navigate } = useNavigation<PublicRouteProps>();
+  const { height } = useWindowDimensions();
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<FormData>();
 
-  const {setUser, getUser, setToken} = useAuth();
-  const {mutation: login, isLoading} = useMutation();
-  const {mutation: gmail, isLoading: isGmailValidating} = useMutation();
-  const {mutation: gLogin} = useMutation();
+  const { setUser, getUser, setToken } = useAuth();
+  const { mutation: login, isLoading } = useMutation();
+  const { mutation: gmail, isLoading: isGmailValidating } = useMutation();
+  const { mutation: gLogin } = useMutation();
   let objData: any = {};
-  const {data, error, isValidating} = useSwrApi(`auth/google/select-profile`);
+  const { data, error, isValidating } = useSwrApi(`auth/google/select-profile`);
 
-  console.log(data, 'data');
+  // console.log(data, 'data');
 
   const handleLogin = async (formData: FormData) => {
     try {
-      const {mobile} = formData;
+      const { mobile } = formData;
       // console.log('Mobile Number:', mobile);
       // console.log('Mobile Number:', selectedCountry.name);
       // console.log('Mobile Number:', selectedCountry.phone);
@@ -117,8 +117,9 @@ export default function Register(): JSX.Element {
   };
 
   const handleLoginWithGmail = async (data: FormData) => {
-    const {username, password} = data;
+    const { username, password } = data;
     try {
+      let objData = { email: username, password: password };
       const res = await gmail(`auth/register-with-email-and-password`, {
         body: {
           email: username,
@@ -126,13 +127,21 @@ export default function Register(): JSX.Element {
         },
       });
       console.log(res);
-      if (res?.results?.success) {
+      if (res?.results?.success && res?.results?.data?.token && res?.results?.data?.otp) {
+        setToken(res?.results?.data?.token);
+        await gLogin(`auth/verify-email-or-phone`, {
+          body: {
+            token: res?.results?.data?.token,
+            otp: res?.results?.data?.otp,
+          },
+        })
         toast.show({
           title: res?.results?.success
             ? 'Register Successful login your account !'
             : 'Login Failed',
           duration: 5000,
         });
+
         navigate('Login');
       }
     } catch (error) {
@@ -158,7 +167,7 @@ export default function Register(): JSX.Element {
         key: 'username',
         label: 'Email',
         placeholder: 'Username',
-        icon: {FeatherName: 'mail'},
+        icon: { FeatherName: 'mail' },
         rules: {
           required: 'Username is required',
           pattern: {
@@ -176,7 +185,7 @@ export default function Register(): JSX.Element {
         key: 'password',
         label: 'Password',
         placeholder: 'Password',
-        icon: {FeatherName: 'lock'},
+        icon: { FeatherName: 'lock' },
         rules: {
           required: 'Password is required',
           minLength: {
@@ -189,7 +198,7 @@ export default function Register(): JSX.Element {
           rightElement: (
             <Btn
               colors={['#fff', '#fff']}
-              _text={{color: 'black', fontSize: 'xs'}}
+              _text={{ color: 'black', fontSize: 'xs' }}
               onPress={() => setSecureTextEntry(!secureTextEntry)}>
               {secureTextEntry ? 'Show' : 'Hide'}
             </Btn>
@@ -206,7 +215,7 @@ export default function Register(): JSX.Element {
         key: 'mobile',
         label: undefined,
         placeholder: 'Enter your mobile number',
-        icon: {IoniconsName: 'call', color: 'gray'},
+        icon: { IoniconsName: 'call', color: 'gray' },
         rules: {
           required: 'Mobile number is required',
           pattern: {
@@ -340,7 +349,7 @@ export default function Register(): JSX.Element {
           </Box>
         </Center>
       </ScrollView> */}
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Box
           zIndex={1}
           bg={{
@@ -353,12 +362,12 @@ export default function Register(): JSX.Element {
           flex={1}
           position="relative">
           <ImageBackground
-            style={{flex: 1, height: 450}}
+            style={{ flex: 1, height: 450 }}
             borderRadius={5}
             resizeMode="cover"
             source={IMAGES.FIRST}
             alt="Logo"
-            imageStyle={{opacity: 0.2, backgroundColor: 'blue'}}>
+            imageStyle={{ opacity: 0.2, backgroundColor: 'blue' }}>
             <Image
               source={IMAGES.SECOND}
               resizeMode={'contain'}
@@ -421,7 +430,7 @@ export default function Register(): JSX.Element {
                   <Box m={2}>
                     <Btn
                       bg={COLORS.PRIMARY}
-                      _text={{color: 'white', fontSize: 'sm'}}
+                      _text={{ color: 'white', fontSize: 'sm' }}
                       onPress={handleSubmit(handleLoginWithGmail)}
                       shadow={0.8}>
                       <Heading fontSize={15} py={1} color={'white'}>
@@ -453,7 +462,7 @@ export default function Register(): JSX.Element {
                           fontSize: 'sm',
                           fontWeight: '',
                         }}
-                        onPress={() => navigate('Login', {objData})}>
+                        onPress={() => navigate('Login', { objData })}>
                         Login
                       </Btn>
                     </HStack>
@@ -500,7 +509,7 @@ export default function Register(): JSX.Element {
                   <Box m={2}>
                     <Btn
                       bg={COLORS.PRIMARY}
-                      _text={{color: 'white', fontSize: 'sm'}}
+                      _text={{ color: 'white', fontSize: 'sm' }}
                       onPress={handleSubmit(handleLogin)}
                       shadow={0.8}>
                       <Heading fontSize={15} py={1} color={'white'}>
@@ -528,7 +537,7 @@ export default function Register(): JSX.Element {
                         fontSize: 'sm',
                         fontWeight: '',
                       }}
-                      onPress={() => navigate('Login', {objData})}>
+                      onPress={() => navigate('Login', { objData })}>
                       Login
                     </Btn>
                   </HStack>
@@ -538,7 +547,7 @@ export default function Register(): JSX.Element {
                   </Text>
 
                   <Pressable
-                    _pressed={{opacity: 0.8}}
+                    _pressed={{ opacity: 0.8 }}
                     w={'92%'}
                     py={1.5}
                     borderColor={'blue.800'}
@@ -569,7 +578,7 @@ export default function Register(): JSX.Element {
               )}
 
               <Pressable
-                _pressed={{opacity: 0.8}}
+                _pressed={{ opacity: 0.8 }}
                 w={'92%'}
                 py={1.5}
                 onPress={() => {
@@ -585,17 +594,13 @@ export default function Register(): JSX.Element {
                 <HStack
                   alignItems={'center'}
                   justifyContent={'center'}
-                  space={3}>
-                  <Image
-                    source={IMAGES.GOOGLE}
-                    resizeMode={'contain'}
-                    h="5"
-                    w="6"
-                    bg={'transparent'}
-                    alt="Logo"
+                  space={4}>
+                  <AppIcon
+                    FontistoName="email"
+                    size={18}
                   />
                   <Heading fontSize={15} py={1} color={'black'}>
-                    {`Register With ${!isPhone ? 'Phone' : 'Gmail'}`}
+                    {`Register With ${!isPhone ? 'Phone' : 'Email'}`}
                   </Heading>
                 </HStack>
               </Pressable>
@@ -605,7 +610,7 @@ export default function Register(): JSX.Element {
                     By continuing, you agree to our{' '}
                   </Content>
                   <Pressable
-                    _pressed={{opacity: 0.6}}
+                    _pressed={{ opacity: 0.6 }}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/terms-and-conditions',
@@ -625,7 +630,7 @@ export default function Register(): JSX.Element {
                     and{' '}
                   </Content>
                   <Pressable
-                    _pressed={{opacity: 0.6}}
+                    _pressed={{ opacity: 0.6 }}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/privacy-policy',
