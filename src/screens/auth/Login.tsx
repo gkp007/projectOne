@@ -48,6 +48,7 @@ export default function Login(): JSX.Element {
   const toast = useToast();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [isPhone, setIsPhone] = useState(false);
   let objData: any = {};
   const {navigate} =
     useNavigation<NativeStackNavigationProp<PublicRoutesTypes>>();
@@ -60,6 +61,7 @@ export default function Login(): JSX.Element {
 
   const {setUser, getUser, setToken} = useAuth();
   const {mutation: login, isLoading} = useMutation();
+  const {mutation: gmail, isLoading: isGmailValidating} = useMutation();
   const {mutation: gLogin} = useMutation();
 
   const {data, error, isValidating} = useSwrApi(`auth/google/select-profile`);
@@ -129,6 +131,28 @@ export default function Login(): JSX.Element {
   //   }
   // };
 
+  const handleLoginWithGmail = async (data: FormData) => {
+    const {username, password} = data;
+    try {
+      const res = await gmail(`auth/login-with-email-and-password`, {
+        body: {
+          email: username,
+          password,
+        },
+      });
+      if (res?.results?.success) {
+        setToken(res?.results?.data?.token);
+        setUser(res?.results?.data);
+        toast.show({
+          title: res?.results?.success ? 'Login Successful!' : 'Login Failed',
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [selectedCountry, setSelectedCountry] = useState({
     code: 'IN',
     name: 'India',
@@ -153,6 +177,54 @@ export default function Login(): JSX.Element {
           keyboardType: 'numeric',
           autoCapitalize: 'none',
           variant: 'underlined',
+        },
+      },
+    ],
+    [secureTextEntry],
+  );
+
+  const formInputs1: FormInput[] = useMemo(
+    () => [
+      {
+        key: 'username',
+        label: 'Email',
+        placeholder: 'Username',
+        icon: {FeatherName: 'mail'},
+        rules: {
+          required: 'Username is required',
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: 'Invalid email address',
+          },
+        },
+        inputProps: {
+          keyboardType: 'email-address',
+          autoCapitalize: 'none',
+          marginBottom: '2',
+        },
+      },
+      {
+        key: 'password',
+        label: 'Password',
+        placeholder: 'Password',
+        icon: {FeatherName: 'lock'},
+        rules: {
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password must be at least 6 characters long',
+          },
+        },
+        inputProps: {
+          secureTextEntry,
+          rightElement: (
+            <Btn
+              colors={['#fff', '#fff']}
+              _text={{color: 'black', fontSize: 'xs'}}
+              onPress={() => setSecureTextEntry(!secureTextEntry)}>
+              {secureTextEntry ? 'Show' : 'Hide'}
+            </Btn>
+          ),
         },
       },
     ],
@@ -197,7 +269,7 @@ export default function Login(): JSX.Element {
           <Heading textAlign={'center'} fontSize={15} mt={3} color={'white'}>
             Welcome to the top connection platform
           </Heading>
-          <Text m={3} bold textAlign={'center'} fontSize={15} color={'white'}>
+          <Text mb={3} bold textAlign={'center'} fontSize={15} color={'white'}>
             Login
           </Text>
         </ImageBackground>
@@ -224,95 +296,161 @@ export default function Login(): JSX.Element {
                 </Content>
               </Box>
             </Box>
+            {isPhone ? (
+              <VStack space={2}>
+                <Box px="4">
+                  {formInputs1.map(input => (
+                    <AppInput
+                      input={input}
+                      key={input.key}
+                      control={control}
+                      errorMessage={errors?.[input?.key]?.message}
+                    />
+                  ))}
+                </Box>
 
-            <VStack space={2}>
-              <Box px="4">
-                {formInputs.map(input => (
-                  <AppInput
-                    input={input}
-                    key={input.key}
-                    control={control}
-                    errorMessage={errors?.[input?.key]?.message}
-                    leftElement={
-                      <Pressable onPress={() => setVisible(true)}>
-                        <HStack alignItems={'center'} space={1}>
-                          <Image
-                            source={{
-                              uri: `https://flagcdn.com/w160/${selectedCountry.code.toLocaleLowerCase()}.webp`,
-                            }}
-                            alt="IN"
-                            h={5}
-                            w={8}
-                            mr={2}
-                            key="1"
-                            alignSelf={'center'}
-                            resizeMode="contain"
-                            borderRadius={2}
-                          />
-
-                          <AppIcon
-                            AntDesignName="caretdown"
-                            color={'#000'}
-                            size={10}
-                          />
-                        </HStack>
-                      </Pressable>
-                    }
-                  />
-                ))}
-              </Box>
-
-              <Box m={4}>
-                <Btn
-                  bg={COLORS.PRIMARY}
-                  _text={{color: 'white', fontSize: 'sm'}}
-                  onPress={handleSubmit(handleLogin)}
-                  shadow={0.8}>
-                  {isLoading ? (
-                    <Spinner size={'sm'} color={'white'} />
-                  ) : (
+                <Box m={2}>
+                  <Btn
+                    bg={COLORS.PRIMARY}
+                    _text={{color: 'white', fontSize: 'sm'}}
+                    onPress={handleSubmit(handleLoginWithGmail)}
+                    shadow={0.8}>
                     <Heading fontSize={15} py={1} color={'white'}>
-                      Sign In
+                      {isLoading || isGmailValidating ? (
+                        <Spinner size={'sm'} color={'white'} />
+                      ) : (
+                        <>
+                          <Text> Submit </Text>
+                          <AppIcon
+                            FeatherName="log-in"
+                            color={'white'}
+                            size={20}
+                          />
+                        </>
+                      )}
                     </Heading>
-                  )}
+                  </Btn>
+                </Box>
+              </VStack>
+            ) : (
+              <VStack space={2}>
+                <Box px="4">
+                  {formInputs.map(input => (
+                    <AppInput
+                      input={input}
+                      key={input.key}
+                      control={control}
+                      errorMessage={errors?.[input?.key]?.message}
+                      leftElement={
+                        <Pressable onPress={() => setVisible(true)}>
+                          <HStack alignItems={'center'} space={1}>
+                            <Image
+                              source={{
+                                uri: `https://flagcdn.com/w160/${selectedCountry.code.toLocaleLowerCase()}.webp`,
+                              }}
+                              alt="IN"
+                              h={5}
+                              w={8}
+                              mr={2}
+                              key="1"
+                              alignSelf={'center'}
+                              resizeMode="contain"
+                              borderRadius={2}
+                            />
 
-                  <AppIcon FeatherName="log-in" color={'white'} size={20} />
-                </Btn>
-              </Box>
+                            <AppIcon
+                              AntDesignName="caretdown"
+                              color={'#000'}
+                              size={10}
+                            />
+                          </HStack>
+                        </Pressable>
+                      }
+                    />
+                  ))}
+                </Box>
 
-              <Text mb={4} textAlign={'center'}>
-                - Or -
-              </Text>
+                <Box m={4}>
+                  <Btn
+                    bg={COLORS.PRIMARY}
+                    _text={{color: 'white', fontSize: 'sm'}}
+                    onPress={handleSubmit(handleLogin)}
+                    shadow={0.8}>
+                    {isLoading ? (
+                      <Spinner size={'sm'} color={'white'} />
+                    ) : (
+                      <Heading fontSize={15} py={1} color={'white'}>
+                        Sign In
+                      </Heading>
+                    )}
 
-              <Pressable
-                _pressed={{opacity: 0.8}}
-                w={'92%'}
-                py={1.5}
-                borderColor={'blue.800'}
-                borderRadius={6}
-                bg={'white'}
-                alignSelf={'center'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                borderWidth={0.3}>
-                <HStack
-                  alignItems={'center'}
+                    <AppIcon FeatherName="log-in" color={'white'} size={20} />
+                  </Btn>
+                </Box>
+
+                <Text mb={4} textAlign={'center'}>
+                  - Or -
+                </Text>
+
+                <Pressable
+                  _pressed={{opacity: 0.8}}
+                  w={'92%'}
+                  py={1.5}
+                  borderColor={'blue.800'}
+                  borderRadius={6}
+                  bg={'white'}
+                  alignSelf={'center'}
                   justifyContent={'center'}
-                  space={3}>
-                  <Image
-                    source={IMAGES.GOOGLE}
-                    resizeMode={'contain'}
-                    h="5"
-                    w="6"
-                    bg={'transparent'}
-                    alt="Logo"
-                  />
-                  <Heading fontSize={15} py={1} color={'black'}>
-                    Login With Google
-                  </Heading>
-                </HStack>
-              </Pressable>
-            </VStack>
+                  alignItems={'center'}
+                  borderWidth={0.3}>
+                  <HStack
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    space={3}>
+                    <Image
+                      source={IMAGES.GOOGLE}
+                      resizeMode={'contain'}
+                      h="5"
+                      w="6"
+                      bg={'transparent'}
+                      alt="Logo"
+                    />
+                    <Heading fontSize={15} py={1} color={'black'}>
+                      Login With Google
+                    </Heading>
+                  </HStack>
+                </Pressable>
+              </VStack>
+            )}
+
+            <Pressable
+              _pressed={{opacity: 0.8}}
+              w={'92%'}
+              py={1.5}
+              onPress={() => {
+                setIsPhone(!isPhone);
+              }}
+              borderColor={'blue.800'}
+              borderRadius={6}
+              bg={'white'}
+              alignSelf={'center'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              borderWidth={0.3}>
+              <HStack alignItems={'center'} justifyContent={'center'} space={3}>
+                <Image
+                  source={IMAGES.GOOGLE}
+                  resizeMode={'contain'}
+                  h="5"
+                  w="6"
+                  bg={'transparent'}
+                  alt="Logo"
+                />
+                <Heading fontSize={15} py={1} color={'black'}>
+                  {`Login With ${isPhone ? 'Phone' : 'Gmail'}`}
+                </Heading>
+              </HStack>
+            </Pressable>
 
             {/* <Box mt={5} alignItems={'center'}>
               <HStack>
