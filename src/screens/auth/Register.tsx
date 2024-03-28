@@ -596,7 +596,7 @@ export default function Register(): JSX.Element {
                   justifyContent={'center'}
                   space={4}>
                   <AppIcon
-                    FontistoName="email"
+                    FontistoName={!isPhone ? 'phone' : 'email'}
                     size={18}
                   />
                   <Heading fontSize={15} py={1} color={'black'}>
@@ -611,11 +611,7 @@ export default function Register(): JSX.Element {
                   </Content>
                   <Pressable
                     _pressed={{ opacity: 0.6 }}
-                    onPress={() =>
-                      Linking.openURL(
-                        'https://yard-ecommerce-web.vercel.app/terms-and-conditions',
-                      )
-                    }>
+                  >
                     <Content
                       fontSize={12}
                       weight="400"
@@ -631,11 +627,7 @@ export default function Register(): JSX.Element {
                   </Content>
                   <Pressable
                     _pressed={{ opacity: 0.6 }}
-                    onPress={() =>
-                      Linking.openURL(
-                        'https://yard-ecommerce-web.vercel.app/privacy-policy',
-                      )
-                    }>
+                  >
                     <Content
                       fontSize={12}
                       weight="400"

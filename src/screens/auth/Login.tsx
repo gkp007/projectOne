@@ -129,7 +129,7 @@ export default function Login(): JSX.Element {
   //       // Some other error occurred
   //       console.error('Error occurred while signing in:', error);
   //     }
-  //   }
+  //   }453306
   // };
 
   const handleLoginWithGmail = async (data: FormData) => {
@@ -439,13 +439,9 @@ export default function Login(): JSX.Element {
               alignItems={'center'}
               borderWidth={0.3}>
               <HStack alignItems={'center'} justifyContent={'center'} space={3}>
-                <Image
-                  source={IMAGES.GOOGLE}
-                  resizeMode={'contain'}
-                  h="5"
-                  w="6"
-                  bg={'transparent'}
-                  alt="Logo"
+                <AppIcon
+                  FontistoName={!isPhone ? 'phone' : 'email'}
+                  size={18}
                 />
                 <Heading fontSize={15} py={1} color={'black'}>
                   {`Login With ${!isPhone ? 'Phone' : 'Gmail'}`}
