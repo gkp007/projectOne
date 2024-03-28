@@ -1,17 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect} from 'react';
-import {useAuth} from './hooks';
+import React, { useEffect } from 'react';
+import { useAuth } from './hooks';
 import PrivateRoutes from './routes/private';
 import PublicRoutes from './routes/public';
 // import { Splash } from './screens/public';
 
 const Routes = () => {
-  const {user, getUser} = useAuth();
+  const { user, getUser } = useAuth();
   const [isEnter, setIsEnter] = React.useState<string | null>();
   const getUserEnter = async () => {
     try {
-      const viewedOnboarding = await AsyncStorage.getItem('viewedOnboarding');
-      setIsEnter(viewedOnboarding);
+      // const viewedOnboarding = await AsyncStorage.getItem('viewedOnboarding');
+      // setIsEnter(viewedOnboarding);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +38,7 @@ const Routes = () => {
     <PrivateRoutes />
   ) : (
     <PublicRoutes
-      initialRouteName={isEnter === 'true' ? 'Register' : 'Onboarding'}
+      initialRouteName={isEnter === 'true' ? 'Register' : 'Login'}
     />
   );
 };

@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AnimatedLottieView from 'lottie-react-native';
 import {
   Box,
@@ -16,21 +16,21 @@ import {
   Alert,
   Spinner,
 } from 'native-base';
-import React, {useMemo, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {ImageBackground, Linking, useWindowDimensions} from 'react-native';
-import {IMAGES} from '~/assets';
-import {LOTTI} from '~/assets/animations';
-import {AppInput, Btn, Content, CountryPicker} from '~/components/core';
-import AppIcon, {IconProps} from '~/components/core/AppIcon';
-import {useAuth, useMutation, useSwrApi} from '~/hooks';
-import {PublicRoutesTypes} from '~/routes';
-import {COLORS, HEIGHT} from '~/styles';
+import React, { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ImageBackground, Linking, useWindowDimensions } from 'react-native';
+import { IMAGES } from '~/assets';
+import { LOTTI } from '~/assets/animations';
+import { AppInput, Btn, Content, CountryPicker } from '~/components/core';
+import AppIcon, { IconProps } from '~/components/core/AppIcon';
+import { useAuth, useMutation, useSwrApi } from '~/hooks';
+import { PublicRoutesTypes } from '~/routes';
+import { COLORS, HEIGHT } from '~/styles';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {PublicRouteProps} from '~/routes/public/types';
+import { PublicRouteProps } from '~/routes/public/types';
 
 type FormInput = {
   key: string;
@@ -60,25 +60,25 @@ export default function Register(): JSX.Element {
   const toast = useToast();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [visible, setVisible] = useState(false);
-  const {navigate} = useNavigation<PublicRouteProps>();
-  const {height} = useWindowDimensions();
+  const { navigate } = useNavigation<PublicRouteProps>();
+  const { height } = useWindowDimensions();
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<FormData>();
 
-  const {setUser, getUser, setToken} = useAuth();
-  const {mutation: login, isLoading} = useMutation();
-  const {mutation: gLogin} = useMutation();
+  const { setUser, getUser, setToken } = useAuth();
+  const { mutation: login, isLoading } = useMutation();
+  const { mutation: gLogin } = useMutation();
   let objData: any = {};
-  const {data, error, isValidating} = useSwrApi(`auth/google/select-profile`);
+  const { data, error, isValidating } = useSwrApi(`auth/google/select-profile`);
 
   console.log(data, 'data');
 
   const handleLogin = async (formData: FormData) => {
     try {
-      const {mobile} = formData;
+      const { mobile } = formData;
       // console.log('Mobile Number:', mobile);
       // console.log('Mobile Number:', selectedCountry.name);
       // console.log('Mobile Number:', selectedCountry.phone);
@@ -188,7 +188,7 @@ export default function Register(): JSX.Element {
         key: 'mobile',
         label: undefined,
         placeholder: 'Enter your mobile number',
-        icon: {IoniconsName: 'call', color: 'gray'},
+        icon: { IoniconsName: 'call', color: 'gray' },
         rules: {
           required: 'Mobile number is required',
           pattern: {
@@ -322,7 +322,7 @@ export default function Register(): JSX.Element {
           </Box>
         </Center>
       </ScrollView> */}
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Box
           zIndex={1}
           bg={{
@@ -335,12 +335,12 @@ export default function Register(): JSX.Element {
           flex={1}
           position="relative">
           <ImageBackground
-            style={{flex: 1, height: 450}}
+            style={{ flex: 1, height: 450 }}
             borderRadius={5}
             resizeMode="cover"
             source={IMAGES.FIRST}
             alt="Logo"
-            imageStyle={{opacity: 0.2, backgroundColor: 'blue'}}>
+            imageStyle={{ opacity: 0.2, backgroundColor: 'blue' }}>
             <Image
               source={IMAGES.SECOND}
               resizeMode={'contain'}
@@ -427,7 +427,7 @@ export default function Register(): JSX.Element {
                 <Box m={2}>
                   <Btn
                     bg={COLORS.PRIMARY}
-                    _text={{color: 'white', fontSize: 'sm'}}
+                    _text={{ color: 'white', fontSize: 'sm' }}
                     onPress={handleSubmit(handleLogin)}
                     shadow={0.8}>
                     <Heading fontSize={15} py={1} color={'white'}>
@@ -441,9 +441,10 @@ export default function Register(): JSX.Element {
                     <AppIcon FeatherName="log-in" color={'white'} size={20} />
                   </Btn>
                 </Box>
-                <Box
+                <HStack
                   alignItems="center"
                   flexDirection="row"
+
                   justifyContent={'center'}>
                   <Text fontSize="16" fontWeight="400">
                     Already have an account?
@@ -455,17 +456,17 @@ export default function Register(): JSX.Element {
                       fontSize: 'sm',
                       fontWeight: '',
                     }}
-                    onPress={() => navigate('OTPScreen', {objData})}>
-                    Login/otp screen
+                    onPress={() => navigate('Login', { objData })}>
+                    Login
                   </Btn>
-                </Box>
+                </HStack>
 
                 <Text mb={2} textAlign={'center'}>
                   - Or -
                 </Text>
 
                 <Pressable
-                  _pressed={{opacity: 0.8}}
+                  _pressed={{ opacity: 0.8 }}
                   w={'92%'}
                   py={1.5}
                   borderColor={'blue.800'}
@@ -500,7 +501,7 @@ export default function Register(): JSX.Element {
                     By continuing, you agree to our{' '}
                   </Content>
                   <Pressable
-                    _pressed={{opacity: 0.6}}
+                    _pressed={{ opacity: 0.6 }}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/terms-and-conditions',
@@ -520,7 +521,7 @@ export default function Register(): JSX.Element {
                     and{' '}
                   </Content>
                   <Pressable
-                    _pressed={{opacity: 0.6}}
+                    _pressed={{ opacity: 0.6 }}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/privacy-policy',
