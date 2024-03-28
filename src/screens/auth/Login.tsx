@@ -299,7 +299,7 @@ export default function Login(): JSX.Element {
                 </Content>
               </Box>
             </Box>
-            {isPhone ? (
+            {!isPhone ? (
               <VStack space={2}>
                 <Box px="4">
                   {formInputs1.map(input => (
@@ -449,7 +449,7 @@ export default function Login(): JSX.Element {
                   alt="Logo"
                 />
                 <Heading fontSize={15} py={1} color={'black'}>
-                  {`Login With ${isPhone ? 'Phone' : 'Gmail'}`}
+                  {`Login With ${!isPhone ? 'Phone' : 'Gmail'}`}
                 </Heading>
               </HStack>
             </Pressable>

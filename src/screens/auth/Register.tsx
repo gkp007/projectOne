@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import AnimatedLottieView from 'lottie-react-native';
 import {
   Box,
@@ -16,21 +16,21 @@ import {
   Alert,
   Spinner,
 } from 'native-base';
-import React, { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { ImageBackground, Linking, useWindowDimensions } from 'react-native';
-import { IMAGES } from '~/assets';
-import { LOTTI } from '~/assets/animations';
-import { AppInput, Btn, Content, CountryPicker } from '~/components/core';
-import AppIcon, { IconProps } from '~/components/core/AppIcon';
-import { useAuth, useMutation, useSwrApi } from '~/hooks';
-import { PublicRoutesTypes } from '~/routes';
-import { COLORS, HEIGHT } from '~/styles';
+import React, {useMemo, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {ImageBackground, Linking, useWindowDimensions} from 'react-native';
+import {IMAGES} from '~/assets';
+import {LOTTI} from '~/assets/animations';
+import {AppInput, Btn, Content, CountryPicker} from '~/components/core';
+import AppIcon, {IconProps} from '~/components/core/AppIcon';
+import {useAuth, useMutation, useSwrApi} from '~/hooks';
+import {PublicRoutesTypes} from '~/routes';
+import {COLORS, HEIGHT} from '~/styles';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { PublicRouteProps } from '~/routes/public/types';
+import {PublicRouteProps} from '~/routes/public/types';
 
 type FormInput = {
   key: string;
@@ -58,27 +58,29 @@ export default function Register(): JSX.Element {
   };
 
   const toast = useToast();
+  const [isPhone, setIsPhone] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [visible, setVisible] = useState(false);
-  const { navigate } = useNavigation<PublicRouteProps>();
-  const { height } = useWindowDimensions();
+  const {navigate} = useNavigation<PublicRouteProps>();
+  const {height} = useWindowDimensions();
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm<FormData>();
 
-  const { setUser, getUser, setToken } = useAuth();
-  const { mutation: login, isLoading } = useMutation();
-  const { mutation: gLogin } = useMutation();
+  const {setUser, getUser, setToken} = useAuth();
+  const {mutation: login, isLoading} = useMutation();
+  const {mutation: gmail, isLoading: isGmailValidating} = useMutation();
+  const {mutation: gLogin} = useMutation();
   let objData: any = {};
-  const { data, error, isValidating } = useSwrApi(`auth/google/select-profile`);
+  const {data, error, isValidating} = useSwrApi(`auth/google/select-profile`);
 
   console.log(data, 'data');
 
   const handleLogin = async (formData: FormData) => {
     try {
-      const { mobile } = formData;
+      const {mobile} = formData;
       // console.log('Mobile Number:', mobile);
       // console.log('Mobile Number:', selectedCountry.name);
       // console.log('Mobile Number:', selectedCountry.phone);
@@ -114,6 +116,32 @@ export default function Register(): JSX.Element {
     }
   };
 
+  const handleLoginWithGmail = async (data: FormData) => {
+    const {username, password} = data;
+    try {
+      const res = await gmail(`auth/register-with-email-and-password`, {
+        body: {
+          email: username,
+          password,
+        },
+      });
+      console.log(res);
+      if (res?.results?.success) {
+        toast.show({
+          title: res?.results?.success
+            ? 'Register Successful login your account !'
+            : 'Login Failed',
+          duration: 5000,
+        });
+        navigate('Login');
+      }
+    } catch (error) {
+      Alert(
+        `${error instanceof Error ? error?.message : 'Something Went wrong'}`,
+      );
+    }
+  };
+
   GoogleSignin.configure({
     webClientId: 'YOUR_WEB_CLIENT_ID',
   });
@@ -124,63 +152,53 @@ export default function Register(): JSX.Element {
     phone: '91',
   });
 
-  // const formInputs: FormInput[] = useMemo(
-  //   () => [
-  //     {
-  //       key: 'name',
-  //       label: 'Name',
-  //       placeholder: 'Enter your full name',
-  //       icon: {AntDesignName: 'user'},
-  //       rules: {
-  //         required: 'Fullname is required',
-  //       },
-  //       inputProps: {autoCapitalize: 'none', marginBottom: '2'},
-  //     },
-  //     {
-  //       key: 'username',
-  //       label: 'Email',
-  //       placeholder: 'Username',
-  //       icon: {FeatherName: 'mail'},
-  //       rules: {
-  //         required: 'Username is required',
-  //         pattern: {
-  //           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  //           message: 'Invalid email address',
-  //         },
-  //       },
-  //       inputProps: {
-  //         keyboardType: 'email-address',
-  //         autoCapitalize: 'none',
-  //         marginBottom: '2',
-  //       },
-  //     },
-  //     {
-  //       key: 'password',
-  //       label: 'Password',
-  //       placeholder: 'Password',
-  //       icon: {FeatherName: 'lock'},
-  //       rules: {
-  //         required: 'Password is required',
-  //         minLength: {
-  //           value: 6,
-  //           message: 'Password must be at least 6 characters long',
-  //         },
-  //       },
-  //       inputProps: {
-  //         secureTextEntry,
-  //         rightElement: (
-  //           <Btn
-  //             colors={['#fff', '#fff']}
-  //             _text={{color: 'black', fontSize: 'xs'}}
-  //             onPress={() => setSecureTextEntry(!secureTextEntry)}>
-  //             {secureTextEntry ? 'Show' : 'Hide'}
-  //           </Btn>
-  //         ),
-  //       },
-  //     },
-  //   ],
-  //   [secureTextEntry],
-  // );
+  const formInputs1: FormInput[] = useMemo(
+    () => [
+      {
+        key: 'username',
+        label: 'Email',
+        placeholder: 'Username',
+        icon: {FeatherName: 'mail'},
+        rules: {
+          required: 'Username is required',
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: 'Invalid email address',
+          },
+        },
+        inputProps: {
+          keyboardType: 'email-address',
+          autoCapitalize: 'none',
+          marginBottom: '2',
+        },
+      },
+      {
+        key: 'password',
+        label: 'Password',
+        placeholder: 'Password',
+        icon: {FeatherName: 'lock'},
+        rules: {
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password must be at least 6 characters long',
+          },
+        },
+        inputProps: {
+          secureTextEntry,
+          rightElement: (
+            <Btn
+              colors={['#fff', '#fff']}
+              _text={{color: 'black', fontSize: 'xs'}}
+              onPress={() => setSecureTextEntry(!secureTextEntry)}>
+              {secureTextEntry ? 'Show' : 'Hide'}
+            </Btn>
+          ),
+        },
+      },
+    ],
+    [secureTextEntry],
+  );
 
   const formInputs: FormInput[] = useMemo(
     () => [
@@ -188,7 +206,7 @@ export default function Register(): JSX.Element {
         key: 'mobile',
         label: undefined,
         placeholder: 'Enter your mobile number',
-        icon: { IoniconsName: 'call', color: 'gray' },
+        icon: {IoniconsName: 'call', color: 'gray'},
         rules: {
           required: 'Mobile number is required',
           pattern: {
@@ -322,7 +340,7 @@ export default function Register(): JSX.Element {
           </Box>
         </Center>
       </ScrollView> */}
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <Box
           zIndex={1}
           bg={{
@@ -335,12 +353,12 @@ export default function Register(): JSX.Element {
           flex={1}
           position="relative">
           <ImageBackground
-            style={{ flex: 1, height: 450 }}
+            style={{flex: 1, height: 450}}
             borderRadius={5}
             resizeMode="cover"
             source={IMAGES.FIRST}
             alt="Logo"
-            imageStyle={{ opacity: 0.2, backgroundColor: 'blue' }}>
+            imageStyle={{opacity: 0.2, backgroundColor: 'blue'}}>
             <Image
               source={IMAGES.SECOND}
               resizeMode={'contain'}
@@ -352,7 +370,7 @@ export default function Register(): JSX.Element {
               my="2"
             />
 
-            <Heading mt={16} textAlign={'center'} fontSize={30} color={'white'}>
+            <Heading mt={1} textAlign={'center'} fontSize={30} color={'white'}>
               Connect with skilled people
             </Heading>
 
@@ -387,121 +405,207 @@ export default function Register(): JSX.Element {
                 </Box>
               </Box>
 
-              <VStack space={2}>
-                <Box px="4">
-                  {formInputs.map(input => (
-                    <AppInput
-                      input={input}
-                      key={input.key}
-                      control={control}
-                      errorMessage={errors?.[input?.key]?.message}
-                      leftElement={
-                        <Pressable onPress={() => setVisible(true)}>
-                          <HStack alignItems={'center'} space={1}>
-                            <Image
-                              source={{
-                                uri: `https://flagcdn.com/w160/${selectedCountry.code.toLocaleLowerCase()}.webp`,
-                              }}
-                              alt="IN"
-                              h={5}
-                              w={8}
-                              mr={2}
-                              key="1"
-                              alignSelf={'center'}
-                              resizeMode="contain"
-                              borderRadius={2}
-                            />
+              {!isPhone ? (
+                <VStack space={2}>
+                  <Box px="4">
+                    {formInputs1.map(input => (
+                      <AppInput
+                        input={input}
+                        key={input.key}
+                        control={control}
+                        errorMessage={errors?.[input?.key]?.message}
+                      />
+                    ))}
+                  </Box>
 
+                  <Box m={2}>
+                    <Btn
+                      bg={COLORS.PRIMARY}
+                      _text={{color: 'white', fontSize: 'sm'}}
+                      onPress={handleSubmit(handleLoginWithGmail)}
+                      shadow={0.8}>
+                      <Heading fontSize={15} py={1} color={'white'}>
+                        {isLoading || isGmailValidating ? (
+                          <Spinner size={'sm'} color={'white'} />
+                        ) : (
+                          <>
+                            <Text> Submit </Text>
                             <AppIcon
-                              AntDesignName="caretdown"
-                              color={'#000'}
-                              size={10}
+                              FeatherName="log-in"
+                              color={'white'}
+                              size={20}
                             />
-                          </HStack>
-                        </Pressable>
-                      }
-                    />
-                  ))}
-                </Box>
+                          </>
+                        )}
+                      </Heading>
+                    </Btn>
+                    <HStack
+                      alignItems="center"
+                      flexDirection="row"
+                      justifyContent={'center'}>
+                      <Text fontSize="16" fontWeight="400">
+                        Already have an account?
+                      </Text>
+                      <Btn
+                        colors={['#fff', '#fff']}
+                        _text={{
+                          color: COLORS.PRIMARY,
+                          fontSize: 'sm',
+                          fontWeight: '',
+                        }}
+                        onPress={() => navigate('Login', {objData})}>
+                        Login
+                      </Btn>
+                    </HStack>
+                  </Box>
+                </VStack>
+              ) : (
+                <VStack space={2}>
+                  <Box px="4">
+                    {formInputs.map(input => (
+                      <AppInput
+                        input={input}
+                        key={input.key}
+                        control={control}
+                        errorMessage={errors?.[input?.key]?.message}
+                        leftElement={
+                          <Pressable onPress={() => setVisible(true)}>
+                            <HStack alignItems={'center'} space={1}>
+                              <Image
+                                source={{
+                                  uri: `https://flagcdn.com/w160/${selectedCountry.code.toLocaleLowerCase()}.webp`,
+                                }}
+                                alt="IN"
+                                h={5}
+                                w={8}
+                                mr={2}
+                                key="1"
+                                alignSelf={'center'}
+                                resizeMode="contain"
+                                borderRadius={2}
+                              />
 
-                <Box m={2}>
-                  <Btn
-                    bg={COLORS.PRIMARY}
-                    _text={{ color: 'white', fontSize: 'sm' }}
-                    onPress={handleSubmit(handleLogin)}
-                    shadow={0.8}>
-                    <Heading fontSize={15} py={1} color={'white'}>
-                      {isLoading ? (
-                        <Spinner size={'sm'} color={'white'} />
-                      ) : (
-                        <Text> Get verification code</Text>
-                      )}
-                    </Heading>
+                              <AppIcon
+                                AntDesignName="caretdown"
+                                color={'#000'}
+                                size={10}
+                              />
+                            </HStack>
+                          </Pressable>
+                        }
+                      />
+                    ))}
+                  </Box>
 
-                    <AppIcon FeatherName="log-in" color={'white'} size={20} />
-                  </Btn>
-                </Box>
-                <HStack
-                  alignItems="center"
-                  flexDirection="row"
+                  <Box m={2}>
+                    <Btn
+                      bg={COLORS.PRIMARY}
+                      _text={{color: 'white', fontSize: 'sm'}}
+                      onPress={handleSubmit(handleLogin)}
+                      shadow={0.8}>
+                      <Heading fontSize={15} py={1} color={'white'}>
+                        {isLoading ? (
+                          <Spinner size={'sm'} color={'white'} />
+                        ) : (
+                          <Text> Get verification code</Text>
+                        )}
+                      </Heading>
 
-                  justifyContent={'center'}>
-                  <Text fontSize="16" fontWeight="400">
-                    Already have an account?
-                  </Text>
-                  <Btn
-                    colors={['#fff', '#fff']}
-                    _text={{
-                      color: COLORS.PRIMARY,
-                      fontSize: 'sm',
-                      fontWeight: '',
-                    }}
-                    onPress={() => navigate('Login', { objData })}>
-                    Login
-                  </Btn>
-                </HStack>
-
-                <Text mb={2} textAlign={'center'}>
-                  - Or -
-                </Text>
-
-                <Pressable
-                  _pressed={{ opacity: 0.8 }}
-                  w={'92%'}
-                  py={1.5}
-                  borderColor={'blue.800'}
-                  borderRadius={6}
-                  bg={'white'}
-                  alignSelf={'center'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  borderWidth={0.3}>
+                      <AppIcon FeatherName="log-in" color={'white'} size={20} />
+                    </Btn>
+                  </Box>
                   <HStack
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    space={3}>
-                    <Image
-                      source={IMAGES.GOOGLE}
-                      resizeMode={'contain'}
-                      h="5"
-                      w="6"
-                      bg={'transparent'}
-                      alt="Logo"
-                    />
-                    <Heading fontSize={15} py={1} color={'black'}>
-                      Register With Google
-                    </Heading>
+                    alignItems="center"
+                    flexDirection="row"
+                    justifyContent={'center'}>
+                    <Text fontSize="16" fontWeight="400">
+                      Already have an account?
+                    </Text>
+                    <Btn
+                      colors={['#fff', '#fff']}
+                      _text={{
+                        color: COLORS.PRIMARY,
+                        fontSize: 'sm',
+                        fontWeight: '',
+                      }}
+                      onPress={() => navigate('Login', {objData})}>
+                      Login
+                    </Btn>
                   </HStack>
-                </Pressable>
-              </VStack>
 
+                  <Text mb={2} textAlign={'center'}>
+                    - Or -
+                  </Text>
+
+                  <Pressable
+                    _pressed={{opacity: 0.8}}
+                    w={'92%'}
+                    py={1.5}
+                    borderColor={'blue.800'}
+                    borderRadius={6}
+                    bg={'white'}
+                    alignSelf={'center'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    borderWidth={0.3}>
+                    <HStack
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      space={3}>
+                      <Image
+                        source={IMAGES.GOOGLE}
+                        resizeMode={'contain'}
+                        h="5"
+                        w="6"
+                        bg={'transparent'}
+                        alt="Logo"
+                      />
+                      <Heading fontSize={15} py={1} color={'black'}>
+                        Register With Google
+                      </Heading>
+                    </HStack>
+                  </Pressable>
+                </VStack>
+              )}
+
+              <Pressable
+                _pressed={{opacity: 0.8}}
+                w={'92%'}
+                py={1.5}
+                onPress={() => {
+                  setIsPhone(!isPhone);
+                }}
+                borderColor={'blue.800'}
+                borderRadius={6}
+                bg={'white'}
+                alignSelf={'center'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                borderWidth={0.3}>
+                <HStack
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  space={3}>
+                  <Image
+                    source={IMAGES.GOOGLE}
+                    resizeMode={'contain'}
+                    h="5"
+                    w="6"
+                    bg={'transparent'}
+                    alt="Logo"
+                  />
+                  <Heading fontSize={15} py={1} color={'black'}>
+                    {`Register With ${!isPhone ? 'Phone' : 'Gmail'}`}
+                  </Heading>
+                </HStack>
+              </Pressable>
               <Box mt={5} alignItems={'center'}>
                 <HStack>
                   <Content fontSize={11} color="gray.500" weight="400">
                     By continuing, you agree to our{' '}
                   </Content>
                   <Pressable
-                    _pressed={{ opacity: 0.6 }}
+                    _pressed={{opacity: 0.6}}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/terms-and-conditions',
@@ -521,7 +625,7 @@ export default function Register(): JSX.Element {
                     and{' '}
                   </Content>
                   <Pressable
-                    _pressed={{ opacity: 0.6 }}
+                    _pressed={{opacity: 0.6}}
                     onPress={() =>
                       Linking.openURL(
                         'https://yard-ecommerce-web.vercel.app/privacy-policy',
